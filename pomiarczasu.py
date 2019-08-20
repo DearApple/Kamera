@@ -1,49 +1,48 @@
 from random import randint
 from time import perf_counter
-chronos=[]
-saturn=[]
+czasy_wstaw=[]
+czasy_bomb=[]
 for p in range(0,200):
     def losuj(ile):
-        dzikizgon=[]
+        tab=[]
 
         for i in range(0,ile):
-            dzikizgon.append(randint(-1000,1000))
-        return dzikizgon
-
-    sauron=losuj(500)
-    aragorn=sauron[:]
+            tab.append(randint(-1000,1000))
+        return tab
+    tab=losuj(500)
+    tab1=tab[:]
    
-    z = len(sauron)
+    z = len(tab)
 
 
-    druzyna_pierscienia=perf_counter()
+    start_wstaw=perf_counter()
     for x in range(z):
         min=x
         for y in range (x+1, z):
-             if sauron[min]>sauron[y]:
+             if tab[min]>tab[y]:
                  min=y
-        sauron[x], sauron[min]=sauron[min], sauron[x]           
-    powrot_krola=perf_counter()
+        tab[x], tab[min]=tab[min], tab[x]           
+    koniec_wstaw=perf_counter()
 
-    tolkien=powrot_krola-druzyna_pierscienia
-    chronos.append(tolkien)
+    czas_wstaw=koniec_wstaw-start_wstaw
+    czasy_wstaw.append(czas_wstaw)
 
 
 
-    black_album=perf_counter()
+    start_bomb=perf_counter()
 
     for i in range(z):
         for j in range(i+1,z):
-            if aragorn[i]>aragorn[j]:
-               aragorn[i], aragorn[j]=aragorn[j], aragorn[i]
+            if tab1[i]>tab1[j]:
+               tab1[i], tab1[j]=tab1[j], tab1[i]
 
-    killem_all=perf_counter()
+    koniec_bomb=perf_counter()
 
-    mettalica=killem_all-black_album
-    saturn.append(mettalica)
+    czas_bomb=koniec_bomb-start_bomb
+    czasy_bomb.append(czas_bomb)
          
 
-pitagoras=sum(chronos)/len(chronos)
-gauss=sum(saturn)/len(saturn)
-print("średni czas sortowania przez wstawianie",pitagoras)
-print("średni czas sortowania babelkowego",gauss)
+sr_wstaw=sum(czasy_wstaw)/len(czasy_wstaw)
+sr_bomb=sum(czasy_bomb)/len(czasy_bomb)
+print("średni czas sortowania przez wstawianie",sr_wstaw)
+print("średni czas sortowania babelkowego",sr_bomb)
