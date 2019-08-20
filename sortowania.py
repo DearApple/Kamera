@@ -34,31 +34,26 @@ def quicksort(tab,h,r):
 
 def podziel(tab,h,r):
         print(r)
-        piv=pivot(tab,h,r)
+        piv=round((h+(r-h))/2+1)
         wartosc=tab[piv]
-        zmiana(tab,piv,r)
+        zmien(tab,piv,r)
 
         pozycja=0
         
         for g in range(r-h):
             if tab[g]<=wartosc:
-                zmiana(tab,g,pozycja)
+                zmien(tab,g,pozycja)
                 pozycja = pozycja + 1
 
         zmien(tab,pozycja,z)
         return pozycja
 
 
-
-def pivot(tab,h,r):
- 
-         piv = (h+(r-h))/2
    
 def zmien(tab,a,b):
-    pom = tab[a]
-    tab[a]=tab[b]
-    tab[b]=pom
-
+  
+    tab[a],tab[b]=tab[b], tab[a]
+   
 
    
 quicksort(tab,h=0,r=len(tab))
