@@ -2,6 +2,8 @@ tablica = [8,2,16,23,1,0,4,9,-4,10,-9,5,2,-23,5,165,24,36,69,2]
 tablica1 = [8,2,16,23,1,0,4,9,-4,10,-9,5,2,-23,5,165,24,36,69,2]
 tab = [8,2,16,23,1,0,4,9,-4,10,-9,5,2,-23,5,165,24,36,69,2]
 
+
+
 z = len(tablica)
 
 for x in range(z):
@@ -34,7 +36,7 @@ def quicksort(tab,h,r):
 
 def podziel(tab,h,r):
         print(r)
-        piv=round((h+(r-h))/2+1)
+        piv=round((h+(r-h))/2)
         wartosc=tab[piv]
         zmien(tab,piv,r)
 
@@ -56,6 +58,4 @@ def zmien(tab,a,b):
    
 
    
-quicksort(tab,h=0,r=len(tab))
-          
 print(tab)
