@@ -7,9 +7,8 @@ import base64
 class Stream():
 	def stream_to_photo(self):
 		    cap = cv2.VideoCapture("rtsp://admin:admin123@192.168.2.240:554/ISAPI/Streaming/channels/102")
-		    _, frame1 = cap.read()
-		    frame = open("/home/doradigital/Desktop/test_057.jpg", "rb").read()
-		    succ, encode_frame = cv2.imencode('.jpg',frame1)
+		    _, frame = cap.read()
+		    succ, encode_frame = cv2.imencode('.jpg',frame)
 		   # frame=encode_frame.tobytes()
 		    
 		 
@@ -25,5 +24,5 @@ class Stream():
 		    
 		  
 		    cap.release()			#encode_frame
-		    AlprRecognition().photo_convert(frame)
+		    AlprRecognition().photo_convert(encode_frame)
 

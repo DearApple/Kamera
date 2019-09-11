@@ -10,6 +10,7 @@ class SavePlateResult():
     def to_string(self):
 	if self.is_valid < 7:
 		sav = "valid plate"
+		return sav
 	else:
         	sav = str(self.date) + " " + str(self.plate) + " " + str(self.confidence)
         	return sav
