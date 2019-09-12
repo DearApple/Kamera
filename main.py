@@ -4,54 +4,90 @@ from distutils.core import setup
 
 from distutils.core import setup
 
+from openalpr import Alpr
+import time
 import datetime
 import sqlite3
 import cv2
 import time
 import base64
+import threading
 
-from cam2 import Stream
-from Alpr_sc import AlprRecognition
-from zapis import SavePlateResult
-from CarData import CarData
+from LicencePlatesManager import LicencePlatesManager
+from SavePlateResult import SavePlateResult
+from Car import Car
 
-def stream_to_photo():
-		    cap = cv2.VideoCapture("rtsp://admin:admin123@192.168.2.240:554/ISAPI/Streaming/channels/102")
-		    _, frame = cap.read()
-		    succ, encode_frame = cv2.imencode('.jpg',frame)
+
+
+def recognize(image):
+			alpr = Alpr("eu", "/etc/openalpr/openalpr.conf", "/usr/share/openalpr/runtime_data")
+				
+			#if not alpr.is_loaded():
+				#print("Error loading OpenALPR")
+			#else:
+				#print("Using OpenALPR " + alpr.get_version())
+
+				#alpr.set_top_n(7)
+				#alpr.set_default_region("eu")
+				#alpr.set_detect_region(False)
+
+			jpeg_bytes = image.tobytes()
+			results = alpr.recognize_array(jpeg_bytes)
+			
+
+
+			if len(results["results"])>0:
+ 
+				return True, recognition_results
+			else:
+				return False, None
+
+def StringPrepare(recognition_result,car): 
+	date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")  	
+	
+	string = str(date) + " " + str(recognition_result.plate) + " " + str(recognition_result.confidence)
+	if car:
+		string +=" " + Car().owner
+		
+	return string
+	
+			
+def SaveResult(string):    
+		path = "/home/doradigital/Desktop/wyniki.txt"
+		file=open(path,'a')
+		file.write(string+'\n')
+		file.close()
+
+
+def jpg_from_stream(stream):
+		    
+		    _, frame = stream.read()
+		    succ, jpg_frame = cv2.imencode('.jpg',frame)
 		  
-		    cap.release()			
-		    AlprRecognition().photo_convert(encode_frame)
+		    			
+		    
+		    return jpg_frame
+         	    ####threading.Timer(1, stream_to_photo).start()
+		    
 
-def write_base_data():
-			
-			
-			con = 'tablice'
-			conn = sqlite3.connect(con)
-			conn.text_factory = sqlite3.OptimizedUnicode
-			cur=conn.cursor()	
-
-			
-
-			for row in cur.execute('SELECT * FROM Tablice '):
-				x = row[2]
-				y = row[1]+" "+row[0]
-				tab=[]
-				u=CarData(x,y)
-				tab.append(u)
 				
 
+plate_manager = LicencePlatesManager()
+plate_manager.read_plates_from_database()
 
-alpr = None
-try:
-	write_base_data()
-	while True:
-        	
-		stream_to_photo()
-       
-    
+stream = cv2.VideoCapture("rtsp://admin:admin123@192.168.2.240:554/ISAPI/Streaming/channels/102")
+
+while True:		
+	starttime=time.time()
+		#zbierane klatek
+	jpg_frame = jpg_from_stream(stream)
+		#konwersja
+	rec_success, recognition_results = recognize(jpg_frame)
+		#rozpoznanie
+	if rec_success:
+		match_success, recognized_car = plate_manager.plate_match(plate_recognition_resolt.plate)
 		
-
-finally:
-    if alpr:
-        alpr.unload()
+		string = StringPrepare(recognition_result,recognized_car)
+		SaveResult(string)
+	print("makarena")
+	time.sleep(1.0-(time.time()-starttime))
