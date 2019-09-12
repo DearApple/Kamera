@@ -1,5 +1,5 @@
 
-class SavePlateResult():
+class RecognitionResult():
     def __init__(self,result):
         self.plate = result["results"][0]["plate"]
         self.confidence = round(result["results"][0]["confidence"],1)

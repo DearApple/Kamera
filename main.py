@@ -5,6 +5,7 @@ from distutils.core import setup
 from distutils.core import setup
 
 from openalpr import Alpr
+
 import time
 import datetime
 import sqlite3
@@ -14,9 +15,8 @@ import base64
 import threading
 
 from LicencePlatesManager import LicencePlatesManager
-from SavePlateResult import SavePlateResult
+from SavePlateResult import RecognitionResult
 from Car import Car
-
 
 
 def recognize(image):
@@ -34,10 +34,8 @@ def recognize(image):
 			jpeg_bytes = image.tobytes()
 			results = alpr.recognize_array(jpeg_bytes)
 			
-
-
 			if len(results["results"])>0:
- 
+ 				recognition_results = RecognitionResult(results)
 				return True, recognition_results
 			else:
 				return False, None
@@ -63,15 +61,11 @@ def jpg_from_stream(stream):
 		    
 		    _, frame = stream.read()
 		    succ, jpg_frame = cv2.imencode('.jpg',frame)
-		  
-		    			
-		    
+		  		    
 		    return jpg_frame
-         	    ####threading.Timer(1, stream_to_photo).start()
+         	
 		    
-
-				
-
+			
 plate_manager = LicencePlatesManager()
 plate_manager.read_plates_from_database()
 
