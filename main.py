@@ -36,11 +36,9 @@ def recognize(image):
 			
 			if len(results["results"])>0:
  				recognition_results = RecognitionResult(results)
-				print("dobrze")
 				return True, recognition_results
 				
 			else:
-				print("zle")
 				return False, None
 
 def StringPrepare(recognition_result,car): 
@@ -58,7 +56,6 @@ def SaveResult(string):
 		file=open(path,'a')
 		file.write(string+'\n')
 		file.close()
-		print("zapis")
 
 def jpg_from_stream(stream):
 		    
