@@ -36,8 +36,11 @@ def recognize(image):
 			
 			if len(results["results"])>0:
  				recognition_results = RecognitionResult(results)
+				print("dobrze")
 				return True, recognition_results
+				
 			else:
+				print("zle")
 				return False, None
 
 def StringPrepare(recognition_result,car): 
@@ -55,7 +58,7 @@ def SaveResult(string):
 		file=open(path,'a')
 		file.write(string+'\n')
 		file.close()
-
+		print("zapis")
 
 def jpg_from_stream(stream):
 		    
@@ -79,9 +82,8 @@ while True:
 	rec_success, recognition_results = recognize(jpg_frame)
 		#rozpoznanie
 	if rec_success:
-		match_success, recognized_car = plate_manager.plate_match(plate_recognition_resolt.plate)
+		match_success, recognized_car = plate_manager.plate_match(recognition_results.plate)
 		
-		string = StringPrepare(recognition_result,recognized_car)
+		string = StringPrepare(recognition_results,recognized_car)
 		SaveResult(string)
-	print("makarena")
 	time.sleep(1.0-(time.time()-starttime))

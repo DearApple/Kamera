@@ -20,11 +20,10 @@ class LicencePlatesManager():
 			self.cars.append(u)
 			
 		
-	def plate_match(plate):
+	def plate_match(self, plate):
 		for car in cars:
 			if car.plate == plate:
 				return True, car
-
 		return False, None
 		
 
